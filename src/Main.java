@@ -5,20 +5,70 @@ import factories.AnimalFactory;
 import java.util.Scanner;
 
 public class Main {
+    private static Scanner scanner = new Scanner(System.in);
+
 
     public static void main(String... args) {
 
-        Scanner stroka = new Scanner(System.in);
+
         String symbols;
-        System.out.println("введите CAT");
-        symbols = stroka.nextLine();
-        System.out.println("Вы ввели: " + symbols);
+        String cat = "CAT";
+        String dog = "DOG";
+        String duck = "DUCK";
 
-        AnimalFactory animalFactory = new AnimalFactory();
+        while (true) {
+            System.out.println("введите животное");
+            symbols = scanner.nextLine();
+            System.out.println("Вы ввели: " + symbols);
 
-        AbsAnimal cat = animalFactory.create(AnimalTypeData.CAT);
-        cat.eat();
+            if (symbols.equals(cat)) {
+                System.out.println("Вы ввели " + symbols);
+                AbsAnimal animal = fillAnimalData(AnimalTypeData.CAT);
+                //cat.eat();
+            } else if (symbols.equals(dog)) {
+                System.out.println("Вы ввели " + symbols);
+                AbsAnimal animal = fillAnimalData(AnimalTypeData.DOG);
+
+            } else if (symbols.equals(duck)) {
+                System.out.println("Вы ввели " + symbols);
+                AbsAnimal animal = fillAnimalData(AnimalTypeData.DUCK);
+            }
+        }
     }
+
+    private static AbsAnimal fillAnimalData(AnimalTypeData animalTypeData) {
+        AnimalFactory animalFactory = new AnimalFactory();
+        AbsAnimal animal = animalFactory.create(animalTypeData);
+        System.out.println("Как зовут животное?");
+        animal.setName(scanner.next());
+
+        System.out.println("Какой цвет у животного?");
+        animal.setColor(scanner.next());
+
+        System.out.println("Какой возраст животного?");
+        while (!scanner.hasNextInt()) {
+            System.out.println("введен неверный возраст");
+            System.out.println("Повторите ввод");
+        }
+        animal.setAge(scanner.nextInt());
+
+
+        System.out.println("Какой вес у животного?");
+        while (!scanner.hasNextInt()) {
+            System.out.println("введен неверный вес");
+            System.out.println("Повторите ввод");
+        }
+        animal.setWeight(scanner.nextInt());
+
+        return animal;
+    }
+}
+
+
+//            AnimalFactory animalFactory = new AnimalFactory();
+//
+//            AbsAnimal cat = animalFactory.create(AnimalTypeData.CAT);
+//            cat.eat();
 
 
 
@@ -65,4 +115,4 @@ public class Main {
 
  //       }
  //   }
-}
+//}
