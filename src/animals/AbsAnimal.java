@@ -1,10 +1,10 @@
 package animals;
 
 public abstract class AbsAnimal {
-    private String name;
-    private int age;
-    private int weight;
-    private String color;
+    public String name;
+    public int age;
+    public int weight;
+    public String color;
 
     public String getName() {
         return this.name;
