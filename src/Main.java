@@ -1,59 +1,151 @@
+//import animals.AbsAnimal;
+//import animals.pets.Cat;
+//import com.sun.org.apache.bcel.internal.generic.SWITCH;
+//import data.AnimalTypeData;
+//import data.CommandsData;
+//import factories.AnimalFactory;
+//import java.util.*
+//
+//import java.util.Locale;
+//import java.util.Scanner;
+//import java.util.ArrayList;
+
 import animals.AbsAnimal;
+import animals.birds.Duck;
+import animals.pets.Cat;
 import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import data.AnimalTypeData;
+import data.CommandsData;
 import factories.AnimalFactory;
+import java.util.*;
+
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String... args) {
-        static Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         String symbols;
-        System.out.println("введите строку : ");
-        symbols = scanner.nextLine();
 
+        while (true) {
 
-//        String cat = "CAT";
-//        String dog = "DOG";
-//        String duck = "DUCK";
+            System.out.println("введите команду: ");
+            symbols = scanner.nextLine().trim().toUpperCase(Locale.ROOT);
+            boolean isExist = false;
 
-        String cat = AnimalTypeData.CAT.toString();
-        String dog = AnimalTypeData.DOG.toString();
-        String duck = AnimalTypeData.DUCK.toString();
-
-        ArrayList<String> list = new ArrayList<>();
-        list.add(0,cat);
-        list.add(1,dog);
-        list.add(2,duck);
-
-        for (int i = 0; i< list.size(); i++) {
-            System.out.println(list.get(i));
-        }
-        if (symbols == list.get(0)) {
-            System.out.println("Был выбран CAT");
-        }
-
- //       while (true) {
-            System.out.println("введите животное");
-            symbols = scanner.nextLine();
-            System.out.println("Вы ввели: " + symbols);
-
-            if (symbols.equals(cat)) {
-                System.out.println("Вы ввели " + symbols);
-                AbsAnimal animal = fillAnimalData(AnimalTypeData.CAT);
-                //cat.eat();
-            } else if (symbols.equals(dog)) {
-                System.out.println("Вы ввели " + symbols);
-                AbsAnimal animal = fillAnimalData(AnimalTypeData.DOG);
-
-            } else if (symbols.equals(duck)) {
-                System.out.println("Вы ввели " + symbols);
-                AbsAnimal animal = fillAnimalData(AnimalTypeData.DUCK);
+            for (CommandsData command : CommandsData.values()) {
+                if (command.name().equals(symbols)) {
+                    isExist = true;
+                    break;
+                }
             }
- //       }
+
+            if (!isExist) {
+                System.out.println("Введена неверная команда");
+                continue;
+            }
+            CommandsData command = CommandsData.valueOf(symbols);
+            System.out.println("Вы ввели правильную команду ");
+
+            switch (command) {
+                case ADD: {
+
+                    System.out.println("введите вид животного : ");
+                    String zhivotnoe = scanner.nextLine().trim().toUpperCase(Locale.ROOT);
+
+                    isExist = false;
+                    for (AnimalTypeData nameanimal : AnimalTypeData.values()) {
+                        if (nameanimal.name().equals(zhivotnoe)) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExist) {
+                        continue;
+                    }
+                    AnimalTypeData animalType = AnimalTypeData.valueOf(zhivotnoe);
+                    System.out.println("Вы ввели правильное животное ");
+
+//                    //AbsAnimal animal = null;
+//                    switch (animalType) {
+//                        case CAT: {
+//                            animal = new Cat();
+//
+//                        }
+//
+//                    }
+
+                    AbsAnimal animal = fillAnimalData(animalType, scanner);
+                    System.out.println("Привет! Меня зовут "+animal.name+" мне "+(animal.age) +" лет "+ "Я вешу "+ (animal.weight) + " кг" + " Мой цвет "+animal.color
+                    );
+
+
+//
+//         Последнее условие можно не писать, т.к. в данный диапазон программа попадет по умолчанию
+//        т.е. return "года";
+//                    return "года";
+
+                    animal.say();
+
+
+                    switch (animalType) {
+                        case DUCK: {
+                            animal = new Duck();
+//                           animals.birds.Duck.fly();
+//                            birds.
+                        }
+                    }
+
+                }
+
+                case LIST: {
+                    System.out.println("введите вид животного : ");
+                    String zhivotnoe = scanner.nextLine().trim().toUpperCase(Locale.ROOT);
+
+                    isExist = false;
+                    for (AnimalTypeData nameanimal : AnimalTypeData.values()) {
+                        if (nameanimal.name().equals(zhivotnoe)) {
+                            isExist = true;
+                            break;
+                        }
+                    }
+
+                    if (!isExist) {
+                        continue;
+                    }
+                    AnimalTypeData animalType = AnimalTypeData.valueOf(zhivotnoe);
+                    System.out.println("Вы ввели правильное животное ");
+
+                    AbsAnimal animal = fillAnimalData(animalType, scanner);
+                    switch (animalType) {
+                        case DUCK:
+                            System.out.println("Я летаю"); // здесь не получилось использовать метод fly из класса Duck
+
+                    }
+                    animal.say();
+                    animal.eat();
+                    animal.drink();
+                    animal.go();
+                    System.out.println("Привет! Меня зовут "+animal.name+" мне "+(animal.age) +" лет "+ "Я вешу "+ (animal.weight) + " кг" + " Мой цвет "+animal.color
+                    );
+
+
+                }
+               case EXIT: {
+                    System.out.println("Выход из программы, программа завершена");
+                    System.exit(0); //Terminates jvm
+                }
+                default: {
+                    System.out.println("Выход по DEFAULT");
+                }
+            }
+        }
     }
 
-    public static AbsAnimal fillAnimalData(AnimalTypeData animalTypeData) {
+
+    public static AbsAnimal fillAnimalData(AnimalTypeData animalTypeData, Scanner scanner) {
         AnimalFactory animalFactory = new AnimalFactory();
         AbsAnimal animal = animalFactory.create(animalTypeData);
         System.out.println("Как зовут животное?");
@@ -81,55 +173,3 @@ public class Main {
     }
 }
 
-
-//            AnimalFactory animalFactory = new AnimalFactory();
-//
-//            AbsAnimal cat = animalFactory.create(AnimalTypeData.CAT);
-//            cat.eat();
-
-
-
-
-//        AnimalFactory animalFactory = new AnimalFactory();
-//
-//        AbsAnimal dog = animalFactory.create(AnimalTypeData.DOG);
-////        dog.eat();
-//        AbsAnimal duck = animalFactory.create(AnimalTypeData.DUCK);
-////        duck.say();
-//
-//        private static Scanner  scanner = new Scanner(System.in);
-//
-//        AbsAnimal animal = fillAnimalData(AnimalTypeData.CAT);
-//
-
-
-
-
-//    private static AbsAnimal fillAnimalData(AnimalTypeData animalTypeData) {
-//        AnimalFactory animalFactory = new AnimalFactory();
-//        AbsAnimal animal = animalFactory.create(animalTypeData);
-//        System.out.println("What is the name of animal?");
-//        animal.setName(scanner.next());
-//
-//        System.out.println("What is the color of animal?");
-//        animal.setColor(scanner.next());
-//
-//        System.out.println("What is the age of animal?");
-//        while(!scanner.hasNextInt()) {
-//            System.out.println("введен неверный возраст");
-//            System.out.println("Повторите ввод");
-//
-//        animal.setAge(scanner.nextInt());
-//
-//        System.out.println("What weight of animal?");
-//        while(!scanner.hasNextInt()) {
-//            System.out.println("введен неверный вес");
-//            System.out.println("Повторите ввод");
-//
-//        animal.setWeight(scanner.nextInt());
-//
-//        return animal;
-
- //       }
- //   }
-//}

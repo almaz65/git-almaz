@@ -5,6 +5,6 @@ import animals.AbsAnimal;
 public class Dog extends AbsAnimal {
 
     public void say(){
-        System.out.println("Гав");
+        System.out.println("Я говорю Гав");
     }
 }

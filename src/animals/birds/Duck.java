@@ -3,12 +3,12 @@ package animals.birds;
 import animals.AbsAnimal;
 
 public class Duck extends AbsAnimal implements IFlying {
-    @Override
+ //   @Override
     public void fly() {
         System.out.println("Я летаю");
     }
 
     public void say(){
-        System.out.println("Кря");
+        System.out.println("Я говорю Кря");
     }
 }
